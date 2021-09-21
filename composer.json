@@ -1,0 +1,61 @@
+{
+    "name": "patrickjunod/avs-checker",
+    "description": "AVS Checker - A library for AVS / AHV Number validation",
+    "keywords": [
+        "PatrickJunod",
+        "laravel",
+        "avs-checker"
+    ],
+    "homepage": "https://github.com/patrickjunod/avs-checker",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Patrick Junod",
+            "email": "contact@patrickjunod.dev",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "spatie/laravel-package-tools": "^1.4.3",
+        "illuminate/contracts": "^8.37"
+    },
+    "require-dev": {
+        "nunomaduro/collision": "^5.3",
+        "orchestra/testbench": "^6.15",
+        "pestphp/pest": "^1.18",
+        "pestphp/pest-plugin-laravel": "^1.1",
+        "phpstan/phpstan": "^0.12.99",
+        "spatie/laravel-ray": "^1.23",
+        "vimeo/psalm": "^4.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "PatrickJunod\\AvsChecker\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PatrickJunod\\AvsChecker\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "./vendor/bin/pest --no-coverage",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "PatrickJunod\\AvsChecker\\AvsCheckerServiceProvider"
+            ],
+            "aliases": {
+                "AvsChecker": "PatrickJunod\\AvsChecker\\AvsCheckerFacade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
