@@ -1,16 +1,17 @@
 <?php
 
-namespace PatrickJunod\AvsChecker;
+namespace PatrickJunod\AvsChecker\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @see \PatrickJunod\AvsChecker\AvsChecker
+ * @method static isValid(string $string)
  */
-class AvsCheckerFacade extends Facade
+class AvsChecker extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'avs-checker';
+        return 'AvsChecker';
     }
 }

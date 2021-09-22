@@ -12,7 +12,7 @@ class AvsChecker
      *
      * @var string
      */
-    protected String $avsNumber;
+    private String $avsNumber;
 
     /**
      * Length of the digits in the AVS Number.
@@ -23,12 +23,10 @@ class AvsChecker
 
     /**
      * AvsChecker constructor.
-     *
-     * @param String $avsNumber The AVS Number provided
      */
-    public function __construct(String $avsNumber)
+    public function __construct()
     {
-        $this->avsNumber = $avsNumber;
+        $this->avsNumber = '';
     }
 
     /**
@@ -48,7 +46,7 @@ class AvsChecker
      */
     public function getAvsNumberInArray(): array
     {
-        $formatted = preg_replace('/[^0-9]/', '', $this->avsNumber);
+        $formatted = preg_replace('/[^0-9]/', '', $this->avsNumber) ?? '';
         $formatted = str_split($formatted);
 
         foreach($formatted as $key => $value) {
@@ -101,12 +99,15 @@ class AvsChecker
     /**
      * Check if the given AVS Number is Valid or Not.
      *
+     * @param  String $avsNumber The AVS Number provided
      * @param  bool $checkStrict
      * @return bool
      * @throws AvsNumberExceptions
      */
-    public function isValid(bool $checkStrict = true): bool
+    public function isValid(String $avsNumber, bool $checkStrict = true): bool
     {
+        $this->avsNumber = $avsNumber;
+
         if (! $this->avsNumber) {
             throw new AvsNumberExceptions('AVS Number is not set');
         }

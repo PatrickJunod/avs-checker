@@ -2,14 +2,19 @@
 
 namespace PatrickJunod\AvsChecker;
 
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
-class AvsCheckerServiceProvider extends PackageServiceProvider
+class AvsCheckerServiceProvider extends ServiceProvider
 {
-    public function configurePackage(Package $package): void
+    public function register()
     {
-        $package
-            ->name('avs-checker');
+        $this->app->bind('AvsChecker', function($app) {
+            return new AvsChecker();
+        });
+    }
+
+    public function boot()
+    {
+        //
     }
 }
