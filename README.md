@@ -26,6 +26,16 @@ $avsNumber->isValid();
 // Return true if it's a valid AVS Number, false if not
 ```
 
+You can also validate AVS numbers without dots separation by passing false parameter to the isValid method:
+
+```php
+use PatrickJunod\AvsChecker\AvsChecker;
+
+$avsNumber = new AvsChecker('7563026070592');
+$avsNumber->isValid(false);
+// Return true
+```
+
 ## Testing
 
 ```bash
