@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @see \PatrickJunod\AvsChecker\AvsChecker
- * @method static isValid(string $string)
+ * @method static isValid(String $avsNumber, bool $checkStrict = true)
  */
 class AvsChecker extends Facade
 {
