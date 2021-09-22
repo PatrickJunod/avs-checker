@@ -8,7 +8,7 @@ class AvsCheckerServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind('AvsChecker', function($app) {
+        $this->app->bind('AvsChecker', function ($app) {
             return new AvsChecker();
         });
     }
