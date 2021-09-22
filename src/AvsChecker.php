@@ -4,7 +4,6 @@ namespace PatrickJunod\AvsChecker;
 
 use PatrickJunod\AvsChecker\Exceptions\AvsNumberExceptions;
 
-
 class AvsChecker
 {
     /**
@@ -49,7 +48,7 @@ class AvsChecker
         $formatted = preg_replace('/[^0-9]/', '', $this->avsNumber) ?? '';
         $formatted = str_split($formatted);
 
-        foreach($formatted as $key => $value) {
+        foreach ($formatted as $key => $value) {
             $formatted[$key] = (int) $value;
         }
 
@@ -67,8 +66,8 @@ class AvsChecker
 
         $odd = $even = 0;
 
-        for($i = 0; $i < count($avsArray) - 1; $i++) {
-            if($i % 2) {
+        for ($i = 0; $i < count($avsArray) - 1; $i++) {
+            if ($i % 2) {
                 $odd += $avsArray[$i];
             } else {
                 $even += $avsArray[$i];
@@ -90,7 +89,6 @@ class AvsChecker
      */
     public function hasValidFormat(bool $checkStrict = false): bool
     {
-
         return $checkStrict
             ? preg_match('/[7][5][6]\\.[\d]{4}[.][\d]{4}[.][\d]{2}$/', $this->avsNumber)
             : preg_match('/[7][5][6]\.?[\d]{4}\.?[\d]{4}\.?[\d]{2}$/', $this->avsNumber);
