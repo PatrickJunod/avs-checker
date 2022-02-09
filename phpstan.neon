@@ -10,4 +10,9 @@ parameters:
     # The level 8 is the highest level
     level: 8
 
+    ignoreErrors:
+        -
+            message: '#Call to an undefined method Pest\\Expectation\|Pest\\Support\\Extendable::[a-zA-Z]+\(\)#'
+            path: tests/AvsCheckerTest.php
+
     checkMissingIterableValueType: false

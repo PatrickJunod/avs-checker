@@ -18,6 +18,7 @@ composer require patrickjunod/avs-checker
 
 ## Usage
 
+You can use the AVS Checker as a standalone PHP Package:
 ```php
 use PatrickJunod\AvsChecker\AvsChecker;
 
@@ -26,14 +27,46 @@ $avsNumber->isValid();
 // Return true if it's a valid AVS Number, false if not
 ```
 
-You can also validate AVS numbers without dots separation by passing false parameter to the isValid method:
+### Facade
+Or use it with a facade:
+```php
+use PatrickJunod\AvsChecker\Facades\AvsChecker;
+
+$avsNumber = AvsChecker::isValid('756.3026.0705.92');
+// Return true if it's a valid AVS Number, false if not
+```
+
+### Validate without strict mode
+You can also validate AVS numbers without dots separation by passing false parameter to the isValid method. This option will validate AVS numbers with AND without dots.
 
 ```php
 use PatrickJunod\AvsChecker\AvsChecker;
 
-$avsNumber = new AvsChecker('7563026070592');
-$avsNumber->isValid(false);
+$avsNumber = AvsChecker::isValid('7563026070592', false);
 // Return true
+```
+### Validate an array of AVS Numbers
+You can also validate an array of AVS numbers - with or without strict mode
+
+```php
+use PatrickJunod\AvsChecker\AvsChecker;
+
+$avsNumber = AvsChecker::isValid(['7563026070592', '756.2036.0705.92', 'AAA'], false);
+// Return an array:
+[
+  0 => [
+    "number" => "7563026070592",
+    "isValid" => true
+  ],
+  1 => [
+    "number" => "756.2036.0705.92",
+    "isValid" => true
+  ],
+  2 => [
+    "number" => "AAA",
+    "isValid" => false
+  ]
+]
 ```
 
 ## Testing

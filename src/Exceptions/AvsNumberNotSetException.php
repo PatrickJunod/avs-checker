@@ -2,6 +2,6 @@
 
 namespace PatrickJunod\AvsChecker\Exceptions;
 
-class AvsNumberExceptions extends \Exception
+class AvsNumberNotSetException extends \Exception
 {
 }

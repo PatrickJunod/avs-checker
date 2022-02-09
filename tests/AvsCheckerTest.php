@@ -1,35 +1,61 @@
 <?php
 
-use PatrickJunod\AvsChecker\AvsChecker;
-use PatrickJunod\AvsChecker\Exceptions\AvsNumberExceptions;
+use PatrickJunod\AvsChecker\Exceptions\AvsNumberNotSetException;
+use PatrickJunod\AvsChecker\Facades\AvsChecker;
 
-it('can instantiate a new AVS Checker', function () {
-    $avsNumber = new AvsChecker();
-
-    expect($avsNumber)->toBeInstanceOf(AvsChecker::class);
+it('throw an exception if the AVS number is empty', function () {
+    expect(fn () => AvsChecker::isValid(''))->toThrow(AvsNumberNotSetException::class);
 });
 
-it('validates a correct AVS Number', function () {
-    $avsNumber = new AvsChecker();
-    expect($avsNumber->isValid('756.3620.0705.92'))->toBeTrue();
+it('return true with a correct AVS number', function () {
+    $avsChecker = AvsChecker::isValid('756.2036.0507.92');
+    expect($avsChecker)->toBeTrue();
 });
 
-it('detects an empty AVS Number', function () {
-    $avsNumber = new AvsChecker();
-    $avsNumber->isValid('');
-})->throws(AvsNumberExceptions::class);
-
-it('validates an invalid AVS Number', function () {
-    $avsNumber = new AvsChecker();
-    expect($avsNumber->isValid('726.1234.0705.12'))->toBeFalse();
+it('return false with a wrong AVS format', function () {
+    $avsChecker = AvsChecker::isValid('7526.2036.0507.92');
+    expect($avsChecker)->toBeFalse();
 });
 
-it('detects an invalid number format', function () {
-    $avsNumber = new AvsChecker();
-    expect($avsNumber->isValid('ABCDEF'))->toBeFalse();
+it('return false with a wrong AVS checksum number', function () {
+    $avsChecker = AvsChecker::isValid('756.2036.0507.93');
+    expect($avsChecker)->toBeFalse();
 });
 
-it('detects an invalid checksum', function () {
-    $avsNumber = new AvsChecker();
-    expect($avsNumber->isValid('756.3620.0705.93'))->toBeFalse();
+it('return true with a correct AVS number without dots separation', function () {
+    $avsChecker = AvsChecker::isValid('7562036050792', false);
+    expect($avsChecker)->toBeTrue();
+});
+
+it('return false with a wrong AVS checksum number without dots separation', function () {
+    $avsChecker = AvsChecker::isValid('7562036050793', false);
+    expect($avsChecker)->toBeFalse();
+});
+
+it('return the correct validation for each items in an array', function () {
+    $avsChecker = AvsChecker::isValid(['756.2036.0507.92', 'AAA', '751.2036.0507.92', '7512036050793', '7562036050792'], false);
+    expect($avsChecker)->toMatchArray(
+        [
+            [
+                "number" => "756.2036.0507.92",
+                "isValid" => true,
+            ],
+            [
+                "number" => "AAA",
+                "isValid" => false,
+            ],
+            [
+                "number" => "751.2036.0507.92",
+                "isValid" => false,
+            ],
+            [
+                "number" => "7512036050793",
+                "isValid" => false,
+            ],
+            [
+                "number" => "7562036050792",
+                "isValid" => true,
+            ],
+        ]
+    );
 });
