@@ -2,7 +2,7 @@
 
 namespace PatrickJunod\AvsChecker;
 
-use PatrickJunod\AvsChecker\Exceptions\AvsNumberExceptions;
+use PatrickJunod\AvsChecker\Exceptions\AvsNumberNotSetException;
 
 class AvsChecker
 {
@@ -41,7 +41,9 @@ class AvsChecker
     /**
      * Remove all unnecessary Chars and Split the given AVS Number to an array.
      *
-     * @return array<Int>
+     * @return (int|string)[]
+     *
+     * @psalm-return list<int|string>
      */
     public function getAvsNumberInArray(): array
     {
@@ -68,9 +70,9 @@ class AvsChecker
 
         for ($i = 0; $i < count($avsArray) - 1; $i++) {
             if ($i % 2) {
-                $odd += $avsArray[$i];
+                $odd += (int) $avsArray[$i];
             } else {
-                $even += $avsArray[$i];
+                $even += (int) $avsArray[$i];
             }
         }
 
@@ -84,10 +86,13 @@ class AvsChecker
     /**
      * Check if the given AVS Number is formatted correctly (756.XXXX.XXXX.XY).
      *
-     * @param  bool $checkStrict
-     * @return bool
+     * @param bool $checkStrict
+     *
+     * @return int|false
+     *
+     * @psalm-return int|false
      */
-    public function hasValidFormat(bool $checkStrict = false): bool
+    public function hasValidFormat(bool $checkStrict = false): int|false
     {
         return $checkStrict
             ? preg_match('/[7][5][6]\\.[\d]{4}[.][\d]{4}[.][\d]{2}$/', $this->avsNumber)
@@ -100,14 +105,14 @@ class AvsChecker
      * @param  String $avsNumber The AVS Number provided
      * @param  bool $checkStrict
      * @return bool
-     * @throws AvsNumberExceptions
+     * @throws AvsNumberNotSetException
      */
-    public function isValid(String $avsNumber, bool $checkStrict = true): bool
+    public function validate(String $avsNumber, bool $checkStrict = true): bool
     {
         $this->avsNumber = $avsNumber;
 
         if (! $this->avsNumber) {
-            throw new AvsNumberExceptions('AVS Number is not set');
+            throw new AvsNumberNotSetException('AVS Number is not set');
         }
 
         if (! $this->hasValidFormat($checkStrict)) {
@@ -119,5 +124,25 @@ class AvsChecker
         }
 
         return true;
+    }
+
+    /**
+     * Check if the given AVS Number is Valid or Not.
+     *
+     * @param  String|Array<String> $avsNumber The AVS Number provided
+     * @param  bool $checkStrict
+     * @return bool|array
+     * @throws AvsNumberNotSetException
+     */
+    public function isValid(String|Array $avsNumber, bool $checkStrict = true): bool|array
+    {
+        if(is_array($avsNumber)) {
+            $arrayCheck = [];
+            foreach($avsNumber as $key => $avsNumberItem) {
+                $arrayCheck[$key] = ['number' => $avsNumberItem, 'isValid' => $this->validate($avsNumberItem, $checkStrict)];
+            }
+            return $arrayCheck;
+        }
+        return $this->validate($avsNumber, $checkStrict);
     }
 }
