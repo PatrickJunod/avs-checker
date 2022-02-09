@@ -4,7 +4,7 @@ use PatrickJunod\AvsChecker\Exceptions\AvsNumberNotSetException;
 use PatrickJunod\AvsChecker\Facades\AvsChecker;
 
 it('throw an exception if the AVS number is empty', function () {
-    expect(fn() => AvsChecker::isValid(''))->toThrow(AvsNumberNotSetException::class);
+    expect(fn () => AvsChecker::isValid(''))->toThrow(AvsNumberNotSetException::class);
 });
 
 it('return true with a correct AVS number', function () {
@@ -38,24 +38,24 @@ it('return the correct validation for each items in an array', function () {
         [
             [
                 "number" => "756.2036.0507.92",
-                "isValid" => true
+                "isValid" => true,
             ],
             [
                 "number" => "AAA",
-                "isValid" => false
+                "isValid" => false,
             ],
             [
                 "number" => "751.2036.0507.92",
-                "isValid" => false
+                "isValid" => false,
             ],
             [
                 "number" => "7512036050793",
-                "isValid" => false
+                "isValid" => false,
             ],
             [
                 "number" => "7562036050792",
-                "isValid" => true
-            ]
-        ]);
+                "isValid" => true,
+            ],
+        ]
+    );
 });
-

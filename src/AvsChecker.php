@@ -134,15 +134,17 @@ class AvsChecker
      * @return bool|array
      * @throws AvsNumberNotSetException
      */
-    public function isValid(String|Array $avsNumber, bool $checkStrict = true): bool|array
+    public function isValid(String|array $avsNumber, bool $checkStrict = true): bool|array
     {
-        if(is_array($avsNumber)) {
+        if (is_array($avsNumber)) {
             $arrayCheck = [];
-            foreach($avsNumber as $key => $avsNumberItem) {
+            foreach ($avsNumber as $key => $avsNumberItem) {
                 $arrayCheck[$key] = ['number' => $avsNumberItem, 'isValid' => $this->validate($avsNumberItem, $checkStrict)];
             }
+
             return $arrayCheck;
         }
+
         return $this->validate($avsNumber, $checkStrict);
     }
 }
