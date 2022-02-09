@@ -13,7 +13,7 @@ class AvsCheckerServiceProvider extends ServiceProvider
         });
     }
 
-    public function boot()
+    public function boot(): void
     {
         //
     }
